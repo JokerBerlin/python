@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block page_title%}
+Libros de medicina
+{% endblock %}
+
+{% block page_content %}
+    <table class="egt">
+      <tr>
+        <th>ID</th>
+        <th>Libro</th>
+      </tr>
+      {% for libro in lista_libros %}
+        <tr>
+          <td>{{ libro.id }}</td>
+          <td>{{ libro.nombre }}</td>
+        </tr>
+      {% endfor %}
+    </table>
+
+{% endblock %}
