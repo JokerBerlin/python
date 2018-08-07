@@ -23,11 +23,15 @@ def ultimos_libros(request):
     lista_libros = Libro.objects.order_by('-fecha')[:10]
     return render(request,'libro/ultimos_libros.html', {'lista_libros': lista_libros} )
 
-def horas_adelante(request, offset):
+def horas_adelante(request, horas):
     try:
-        offset = int(offset)
+        horas = int(horas)
     except ValueError:
         raise Http404()
-    dt = datetime.datetime.now()+datetime.timedelta(hours=offset)
-    html = "<html><body><h1>En %s hora(s), seran:</h1> <h3>%s</h3></body></html>" % (offset, dt)
-    return HttpResponse(html)
+    dt = datetime.datetime.now()+datetime.timedelta(hours=horas)
+    template = loader.get_template('horaDelante/hora_delante.html')
+    context = {
+        'hora_siguiente' : dt,
+        'horas': horas
+    }
+    return HttpResponse(template.render(context,request))
