@@ -18,7 +18,7 @@ class Editor(models.Model):
 class Autor(models.Model):
     nombre = models.CharField(max_length=30)
     apellidos = models.CharField(max_length=40)
-    email = models.EmailField()
+    email = models.EmailField('e-mail',blank=True)
 
     def __str__(self):
         return '%s %s' %(self.nombre,self.apellidos)
@@ -27,7 +27,7 @@ class Libro(models.Model):
     titulo = models.CharField(max_length=100)
     autores = models.ManyToManyField(Autor)
     editor = models.ForeignKey(Editor, on_delete = models.PROTECT)
-    fecha_publicacion = models.DateField()
+    fecha_publicacion = models.DateField(blank=True, null=True)
     portada = models.ImageField()
 
     def __str__(self):
