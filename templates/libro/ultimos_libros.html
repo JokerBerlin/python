@@ -7,13 +7,13 @@ Libros de medicina
 {% block page_content %}
     <table class="egt">
       <tr>
-        <th>ID</th>
-        <th>Libro</th>
+        <th>LIBRO</th>
+        <th>FECHA</th>
       </tr>
       {% for libro in lista_libros %}
         <tr>
-          <td>{{ libro.id }}</td>
           <td>{{ libro.nombre }}</td>
+          <td>{{ libro.fecha }}</td>
         </tr>
       {% endfor %}
     </table>
