@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block page_title %}
+  Buscar
+{% endblock %}
+
+{% block page_content %}
+  {% if error %}
+    <p style="color: red;">Por favor introduce un termino de busqueda.</p>
+  {% endif %}
+  <form action="" method="get">
+      <input type="text" name="q">
+      <input type="submit" value="Buscar">
+  </form>
+{% endblock %}
