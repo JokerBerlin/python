@@ -21,7 +21,10 @@ class Autor(models.Model):
     email = models.EmailField('e-mail',blank=True)
 
     def __str__(self):
-        return '%s %s' %(self.nombre,self.apellidos)
+        return self.nombre
+
+    class Meta:
+        ordering =('id',)
 
 class Libro(models.Model):
     titulo = models.CharField(max_length=100)
@@ -29,6 +32,7 @@ class Libro(models.Model):
     editor = models.ForeignKey(Editor, on_delete = models.PROTECT)
     fecha_publicacion = models.DateField(blank=True, null=True)
     portada = models.ImageField()
+    num_paginas = models.IntegerField(blank=True, null=True)
 
     def __str__(self):
         return self.titulo

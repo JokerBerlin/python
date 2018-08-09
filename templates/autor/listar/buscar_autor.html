@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block page_title%}
+  Lista de autores
+{% endblock %}
+
+{% block page_content %}
+  <h1>Lista de autores</h1>
+    <table class="egt">
+      <tr>
+        <th>NOMBRE</th>
+        <th>APELLIDO</th>
+      </tr>
+      {% for autor in lista_autor %}
+        <tr>
+          <td>{{ autor.nombre }}</td>
+          <td>{{ autor.apellidos }}</td>
+        </tr>
+      {% endfor %}
+    </table>
+
+{% endblock %}

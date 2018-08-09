@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block page_title %}
+  Listando Editor
+{% endblock %}
+
+{% block page_content %}
+  <h1>Lista de Editores</h1>
+  <thead>
+    <td>id</td>
+    <td>nombre</td>
+    <td>domicilio</td>
+    <td>ciudad</td>
+    <td>estado</td>
+    <td>pais</td>
+    <td>sitio web</td>
+  </thead>
+  <tbody>
+    {% if object_list %}
+      {% for editor in object_list %}
+        <tr>
+          <td>{{ editor.id }}</td>
+          <td>{{ editor.nombre }}</td>
+          <td>{{ editor.domicilio }}</td>
+          <td>{{ editor.ciudad }}</td>
+          <td>{{ editor.estado }}</td>
+          <td>{{ editor.pais }}</td>
+          <td>{{ editor.website }}</td>
+          <td>
+            <a class="btn btn-primary" href="#">Editar</a>
+            <a class="btn btn-danger" href="#">Eliminar</a>
+          </td>
+        </tr>
+      {% endfor %}
+    {% else %}
+      <h1>No hay registros de solicitudes</h1>
+    {% endif %}
+  </tbody>
+{% endblock %}

@@ -5,8 +5,13 @@
 {% endblock %}
 
 {% block page_content %}
-  {% if error %}
-    <p style="color: red;">Por favor introduce un termino de busqueda.</p>
+  {% if errors %}
+    <!--<p style="color: red;">Por favor introduce un termino de busqueda menor a 20 caracteres.</p>-->
+    <ul>
+      {% for error in errors %}
+        <li style="color: red;">{{ error }}</li>
+      {% endfor %}
+    </ul>
   {% endif %}
   <form action="" method="get">
       <input type="text" name="q">
