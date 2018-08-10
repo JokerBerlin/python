@@ -6,7 +6,8 @@
 
 {% block page_content %}
   <h1>Lista de Editores</h1>
-  <form action="/editor/buscar/" method="get">
+  <form action="{% url 'biblioteca:buscar_editor' %}" method="get">
+    {% csrf_token %}
       <input type="text" name="q">
       <input class="btn btn-primary" type="submit" value="Buscar">
   </form>
