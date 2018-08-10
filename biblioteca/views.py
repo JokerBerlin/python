@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, render_to_response
 from django.template import loader
 
 from django.http import HttpResponse, HttpResponseRedirect
@@ -7,6 +7,7 @@ from .models import Autor, Editor
 from .forms import AutorForm, EditorForm
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
+from django.db.models import Q
 # Create your views here.
 def formulario_buscar(request):
     template = 'buscar/formulario_buscar.html'
@@ -57,27 +58,33 @@ def listar_autor(request):
     }
     return HttpResponse(template.render(context,request))
 
-def actualizar_autor(request, postid):
-    autor = get_object_or_404(Autor, postid = postid)
-    form = AutorForm(request.POST or none, instance = autor)
-    if request.method == 'POST':
-        if form.is_valid():
-            form.save()
-    template = loader.get_template('autor/modificar/modifica_autor.html')
-    context = {
-        'form' : form
-    }
-
-    return HttpResponse(template.render(request,context))
-
 class listar_editor(ListView):
     model = Editor
     template_name = 'editor/listar_editor.html'
 
 
-class filtrar_editor(ListView):
-    model = Editor
-    template_name = 'editor/listar_editor.html'
+def filtrar_editor(request):
+    errors = []
+    if 'q' in request.GET:
+        q=request.GET['q']
+        if not q:
+            errors.append('Por favor introduce un terminoo de busquedas')
+        elif len(q)>20:
+            errors.append('Introduce un numero de busqueda menor a 20 caracteres')
+        else:
+            #mensaje = 'Estas buscando: %r'%request.GET['q']
+            object_list = Editor.objects.filter(nombre__icontains=q)
+            #icontains para que no sea cadena vacia
+
+            context = {
+                'object_list':object_list,
+                'query':q
+            }
+            return render(request,'editor/listar_editor.html',context)
+
+    return render(request,'editor/listar_editor.html',{'errors':errors})
+
+
 
 
 class crear_editor(CreateView):
