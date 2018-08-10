@@ -11,9 +11,10 @@ urlpatterns = [
     path('autor/new', views.insertar_autor,name="nuevo_autor"),
     path('autor/list', views.listar_autor, name = "listar_autor"),
     path('editor/listar', views.listar_editor.as_view(), name = "listar_editor"),
-    path('editor/buscar/', views.filtrar_editor, name ="buscar_editor"),
+    #path('editor/buscar/', views.filtrar_editor, name ="buscar_editor"),
     path('editor/crear', views.crear_editor.as_view(), name = "crear_editor"),
     path('editor/modificar/<int:pk>', views.modificar_editor.as_view(), name = "modificar_editor"),
     path('editor/eliminar/<int:pk>', views.eliminar_editor.as_view(), name = "eliminar_editor"),
+    path('editor/buscar/', views.buscar_editor.as_view(), name = "buscar_editor"),
     #re_path(r'^contactos/$', views.contactos),
 ]

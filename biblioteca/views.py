@@ -5,7 +5,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from .models import Libro
 from .models import Autor, Editor
 from .forms import AutorForm, EditorForm
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView, TemplateView
 from django.urls import reverse_lazy
 from django.db.models import Q
 # Create your views here.
@@ -62,7 +62,7 @@ class listar_editor(ListView):
     model = Editor
     template_name = 'editor/listar_editor.html'
 
-
+'''
 def filtrar_editor(request):
     errors = []
     if 'q' in request.GET:
@@ -83,8 +83,14 @@ def filtrar_editor(request):
             return render(request,'editor/listar_editor.html',context)
 
     return render(request,'editor/listar_editor.html',{'errors':errors})
-
-
+'''
+class buscar_editor(TemplateView):
+    template_name = 'editor/listar_editor.html'
+    def post(self, request, *args, **kwargs):
+        buscar = request.POST['busca']
+        object_list = Editor.objects.filter(nombre__icontains=buscar)|Editor.objects.filter(ciudad__icontains=buscar)
+        print(object_list)
+        return render(request,'editor/listar_editor.html',{'object_list':object_list})
 
 
 class crear_editor(CreateView):

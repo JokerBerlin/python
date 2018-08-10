@@ -5,10 +5,18 @@
 {% endblock %}
 
 {% block page_content %}
+<!--
   <h1>Lista de Editores</h1>
   <form action="{% url 'biblioteca:buscar_editor' %}" method="get">
     {% csrf_token %}
       <input type="text" name="q">
+      <input class="btn btn-primary" type="submit" value="Buscar">
+  </form>
+-->
+  <h1>Editores</h1>
+  <form action="{% url 'biblioteca:buscar_editor' %}" method="post">
+      {% csrf_token %}
+      <input type="text" name="busca">
       <input class="btn btn-primary" type="submit" value="Buscar">
   </form>
 
