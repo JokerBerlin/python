@@ -6,15 +6,21 @@
 
 {% block page_content %}
   <h1>Lista de Editores</h1>
-  <thead>
-    <td>id</td>
-    <td>nombre</td>
-    <td>domicilio</td>
-    <td>ciudad</td>
-    <td>estado</td>
-    <td>pais</td>
-    <td>sitio web</td>
-  </thead>
+  <form action="" method="get">
+      <input type="buscar" name="busca">
+      <input type="submit" value="Buscar">
+  </form>
+
+  <table style="width:100%">
+  <tr>
+    <th>id</th>
+    <th>nombre</th>
+    <th>domicilio</th>
+    <th>ciudad</th>
+    <th>estado</th>
+    <th>pais</th>
+    <th>sitio web</th>
+  </tr>
   <tbody>
     {% if object_list %}
       {% for editor in object_list %}
@@ -27,13 +33,13 @@
           <td>{{ editor.pais }}</td>
           <td>{{ editor.website }}</td>
           <td>
-            <a class="btn btn-primary" href="#">Editar</a>
-            <a class="btn btn-danger" href="#">Eliminar</a>
+            <a class="btn btn-primary" href="{% url 'biblioteca:modificar_editor' pk=editor.id %}">Editar</a>
+            <a class="btn btn-danger" href="{% url 'biblioteca:eliminar_editor' pk=editor.id %}">Eliminar</a>
           </td>
         </tr>
       {% endfor %}
     {% else %}
       <h1>No hay registros de solicitudes</h1>
     {% endif %}
-  </tbody>
+  </table>
 {% endblock %}

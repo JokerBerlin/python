@@ -5,8 +5,8 @@ from django.http import HttpResponse, HttpResponseRedirect
 from .models import Libro
 from .models import Autor, Editor
 from .forms import AutorForm, EditorForm
-#from django.views.generic import ListView, CreateView
-
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+from django.urls import reverse_lazy
 # Create your views here.
 def formulario_buscar(request):
     template = 'buscar/formulario_buscar.html'
@@ -69,19 +69,25 @@ def actualizar_autor(request, postid):
     }
 
     return HttpResponse(template.render(request,context))
-'''
-def listar_editor(ListView):
-    model = Editor
-    template_name = 'editor/listar/listar_editor.html'
 
-def crear_editor(CreateView):
+class listar_editor(ListView):
     model = Editor
-    template_name = 'editor/crear/crear_editor.html'
+    template_name = 'editor/listar_editor.html'
+
+
+class filtrar_editor(ListView):
+    model = Editor
+    template_name = 'editor/listar_editor.html'
+
+
+class crear_editor(CreateView):
+    model = Editor
+    template_name = 'editor/crear_editor.html'
     form_class = EditorForm
-    succes_url = reverse_lazy('biblioteca:listar_autor')
+    success_url = reverse_lazy('biblioteca:listar_editor')
 
-    def get_context_data(Self, **kwargs):
-        context = (EditorCreate, self).get_context_data(**kwargs)
+    def get_context_data(self, **kwargs):
+        context = super(crear_editor, self).get_context_data(**kwargs)
         if 'form' not in context:
             context['form'] = self.form_class(self.request.GET)
         return context
@@ -92,7 +98,37 @@ def crear_editor(CreateView):
         if form.is_valid():
             Editor = form.save()
             Editor.save()
-            return HttpResponseRedirect(self.get_success.url())
+            return HttpResponseRedirect(self.get_success_url())
         else:
-            return self.render_to_response(self.get_context_data(form =form))
-'''
+            return self.render_to_response(self.get_context_data(form = form))
+
+
+class modificar_editor(UpdateView):
+    model = Editor
+    template_name = 'editor/crear_editor.html'
+    form_class = EditorForm
+    success_url = reverse_lazy('biblioteca:listar_editor')
+
+    def get_context_data(self, **kwargs):
+        context = super(modificar_editor, self).get_context_data(**kwargs)
+        pk = self.kwargs.get('pk',0)
+        editor = self.model.objects.get(id=pk)
+        if 'form' not in context:
+            context['form'] = self.form_class()
+        context['id'] = pk
+        return context
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object
+        id_editor = kwargs['pk']
+        editor = self.model.objects.get(id=id_editor)
+        form = self.form_class(request.POST, instance = editor)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(self.get_success_url())
+        else:
+            return HttpResponseRedirect(self.get_success_url())
+
+class eliminar_editor(DeleteView):
+	model = Editor
+	template_name = 'editor/eliminar_editor.html'
+	success_url = reverse_lazy('biblioteca:listar_editor')

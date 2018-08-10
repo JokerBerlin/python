@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block page_title %}
+  Eliminar editor
+{% endblock %}
+
+{% block page_content %}
+  <form method="post">
+    {% csrf_token %}
+    <h3>Está seguro que desea eliminar la solicitud de {{ object.nombre }} del distrito de {{ object.distrito }}?</h3>
+    <button type="submit">Sí, eliminar</button>
+    <a href="{% url 'biblioteca:listar_editor' %}">Cancelar</a>
+  </form>
+{% endblock %}
