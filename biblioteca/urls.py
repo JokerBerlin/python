@@ -16,5 +16,10 @@ urlpatterns = [
     path('editor/modificar/<int:pk>', views.modificar_editor.as_view(), name = "modificar_editor"),
     path('editor/eliminar/<int:pk>', views.eliminar_editor.as_view(), name = "eliminar_editor"),
     path('editor/buscar/', views.buscar_editor.as_view(), name = "buscar_editor"),
+    path('editor/filtrar/',views.filtrar_editor, name="filtrar_editor"),
+    path('editor/algobuscar/',views.algo_buscar, name="algobuscar"),
+    path('editor/search/',views.quince,name="search"),
+
+    #path('editor/bsr',views.buscarEditorNuevo, name = "buscar_nuevo_editor")
     #re_path(r'^contactos/$', views.contactos),
 ]

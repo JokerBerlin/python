@@ -1,3 +1,4 @@
+import json
 from django.shortcuts import render, get_object_or_404, render_to_response
 from django.template import loader
 
@@ -7,7 +8,9 @@ from .models import Autor, Editor
 from .forms import AutorForm, EditorForm
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, TemplateView
 from django.urls import reverse_lazy
-from django.db.models import Q
+
+#import json
+#from django.views.decorators.csrf import csrf_exempt
 # Create your views here.
 def formulario_buscar(request):
     template = 'buscar/formulario_buscar.html'
@@ -61,6 +64,9 @@ def listar_autor(request):
 class listar_editor(ListView):
     model = Editor
     template_name = 'editor/listar_editor.html'
+    paginate_by = 4
+
+
 
 '''
 def filtrar_editor(request):
@@ -91,6 +97,77 @@ class buscar_editor(TemplateView):
         object_list = Editor.objects.filter(nombre__icontains=buscar)|Editor.objects.filter(ciudad__icontains=buscar)
         print(object_list)
         return render(request,'editor/listar_editor.html',{'object_list':object_list})
+
+
+def algo_buscar(request):
+    if request.is_ajax():
+        search=request.GET.get('start','')
+
+        ed = Editor.objects.filter(nombre__icontains = search)
+        r = []
+        for i in ed:
+            ed_json={}
+            ed_json['nombre']=i.nombre
+            r.append(ed_json)
+        data_json = json.dumps(ed_json)
+    else:
+        data_json = 'fail'
+    mimetype="application/json"
+    return HttpResponse(data_json, mimetype)
+
+def filtrar_editor(request):
+
+    if request.is_ajax():
+        query = request.GET.get("term", "")
+        editores = Editor.objects.filter(nombre__icontains=query)
+        results = []
+        for editor in editores:
+            editor_json['id'] = editor.id
+            editor_json['label'] = editor.nombre
+            editor_json['value'] = editor.nombre
+            results.append(editor_json)
+        data = json.dumps(results)
+    else:
+        data = 'fail'
+        mimetype = 'application/json'
+    mimetype = "application/json"
+    return HttpResponse(data, mimetype)
+
+def quince(request):
+    if request.method == 'GET' and 's' in request.GET:
+        quer = request.GET['s']
+        if quer is not None:
+            results = Editor.objects.filter(nombre__icontains=quer)
+            json_list = []
+            for re in results:
+                json_list.append(re.nombre)
+            return HttpResponse(json.dumps(json_list,ensure_ascii=False))
+
+
+'''
+@csrf_exempt
+def buscarEditorNuevo(request):
+    if request.method == 'POST':
+        datos = json.loads(request.body)
+        # usuario= BuscarUsuario(Datos["idUsuario"])
+
+        nombre = datos["nombreEditor"]
+        jsonfinal = {}
+        jsonfinal["editores"] = []
+        try:
+            object_list = Editor.objects.filter(nombre__icontains=nombreEditor)
+            for oEditor in object_list:
+                jsonEditor = {}
+                jsonEditor["id"] = oEditor.id
+                jsonEditor["nombre"] = oEditor.nombre
+                jsonEditor["domicilio"] = oEditor.domicilio
+                jsonEditor["ciudad"] = oEditor.ciudad
+                jsonfinal["editores"].append(jsonEditor)
+
+            return HttpResponse(json.dumps(jsonfinal), content_type="application/json")
+        except Exception as e:
+            return HttpResponse(json.dumps({'exito':0}), content_type="application/json")
+'''
 
 
 class crear_editor(CreateView):

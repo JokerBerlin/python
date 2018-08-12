@@ -5,15 +5,33 @@
 {% endblock %}
 
 {% block page_content %}
-<!--
-  <h1>Lista de Editores</h1>
-  <form action="{% url 'biblioteca:buscar_editor' %}" method="get">
-    {% csrf_token %}
-      <input type="text" name="q">
-      <input class="btn btn-primary" type="submit" value="Buscar">
-  </form>
--->
-  <h1>Editores</h1>
+
+<div style="padding: 100px 100px 10px;">
+     <div style="width: 500px; margin: 0 auto;">
+        <div class="input-group">
+           <input type="text" class="form-control" id="searchinput">
+           <span class="input-group-btn">
+              <button class="btn btn-default" type="button">
+                 Go!
+              </button>
+           </span>
+        </div>
+     </div>
+    <ul id="re">
+    </ul>
+</div>
+
+<div class="ui-widget">
+  <label for="tags1">Busqueda: </label>
+  <input id="tags1">
+</div>
+
+<h1>Editores</h1>
+<div class="form-group bmd-form-group">
+  <label class="bmd-label-static" for="ari">Editor:</label>
+  <input id="ari" class="form-control" placeholder="Editor" style="width:500px">
+</div>
+
   <form action="{% url 'biblioteca:buscar_editor' %}" method="post">
       {% csrf_token %}
       <input type="text" name="busca">
@@ -54,4 +72,18 @@
       {% endif %}
     <tbody>
   </table>
+
+  <ul class="pager">
+    <li>
+      {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}">Previous</a>
+      {% endif %}
+    </li>
+    <li>
+      {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}">Next</a>
+      {% endif %}
+    </li>
+  </ul>
+
 {% endblock %}
